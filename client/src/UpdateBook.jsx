@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 
-const API_URL = process.env.REACT_APP_API_URL;
+import { API_URL } from './config';
 
 const UpdateBook = () => {
   const { id } = useParams()
@@ -16,13 +16,13 @@ const UpdateBook = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios.put('`${API_URL}`/update/' + id, values)
+    axios.put(`${API_URL}/update/` + id, values)
       .then(res => navigate('/'))
       .catch(err => console.log(err))
   }
 
   useEffect(() => {
-    axios.get('`${API_URL}`/getrecord/' + id)
+    axios.get(`${API_URL}/getrecord/` + id)
       .then(res => {
         if (res.data.length > 0) {
           setValues({

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { API_URL } from './config';
 
-const API_URL = process.env.REACT_APP_API_URL;
 
 const Books = () => {
   const [books, setBooks] = useState([])
@@ -12,7 +12,7 @@ const Books = () => {
       .catch(err => console.log(err))
   }, [])
   const handleDelete = (id) => {
-    axios.delete('`${API_URL}`/delete/'+ id)
+    axios.delete(`${API_URL}/delete/${id}`)
     .then(res => window.location.reload())
     .catch(err => console.log(err))
   }

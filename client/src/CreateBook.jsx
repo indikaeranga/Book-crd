@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
-const API_URL = process.env.REACT_APP_API_URL;
+import { API_URL } from './config';
 
 const CreateBook = () => {
 
@@ -14,7 +14,7 @@ const CreateBook = () => {
   const navigate = useNavigate()
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios.post('`${API_URL}`/create', values)
+    axios.post(`${API_URL}/create`, values)
     .then(res => navigate('/'))
     .catch(err => console.log(err))
   }

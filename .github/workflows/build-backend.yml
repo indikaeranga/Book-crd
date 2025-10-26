@@ -34,4 +34,4 @@ jobs:
         with:
           context: ./server
           push: true
-          tags: indikaeranga06/book-crd-backend:${{ github.event.inputs.tag }}
+          tags: indikaeranga06/book-crd-backend:${{ github.event.inputs.tag || 'latest'}}

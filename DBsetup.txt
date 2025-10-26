@@ -1,0 +1,74 @@
+🧩🧩🧩🧩🧩🧩🧩DB Setup in AWS EC2🧩🧩🧩🧩🧩🧩🧩
+
+🧩Install MySQL server
+
+sudo apt update
+sudo apt install mysql-server -y
+sudo systemctl enable mysql
+sudo systemctl start mysql
+
+🧩Create a database and user
+
+sudo mysql
+
+CREATE DATABASE crud;
+CREATE USER 'crud_user'@'%' IDENTIFIED BY ' ';
+GRANT ALL PRIVILEGES ON crud.* TO 'crud_user'@'%';
+FLUSH PRIVILEGES;
+EXIT;
+
+🧩Import your phpMyAdmin backup into EC2
+
+#database file needs to copy to server and do the below export within the location itself.
+mysql -u crud_user -p crud < ~/crud.sql  
+
+🧩 Allow external access (optional — if app runs elsewhere)
+sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+bind-address = 127.0.0.1
+Change to:
+bind-address = 0.0.0.0
+
+🧩 restart mysql
+sudo systemctl restart mysql
+
+---------------------------------------------------
+
+🧩Go to Security Groups in the instance and add inbound rules
+
+Type: MySQL/Aurora
+Port: 3306
+Source: IP (or 0.0.0.0/0  because testing)
+
+Extra for API connection
+Type: Custom TCP
+Port range: 3030  #node backend api
+Source: your IP (or 0.0.0.0/0 for testing only)
+
+Type: Custom TCP
+Port range: 5173  #react frontend
+Source: your IP (or 0.0.0.0/0 for testing only)
+
+---------------------------------------------------
+
+🧩 Test DB
+
+mysql -u root
+#type password : StrongPassword123!
+
+🧩 List all MySQL users
+SELECT user, host FROM mysql.user;
+
+
+🧩 user should have all connect priviledges. % symbol. If not, grant privileges:
+
+GRANT ALL PRIVILEGES ON crud.* TO 'crud_user'@'%' IDENTIFIED BY 'StrongPassword123!';
+FLUSH PRIVILEGES;
+
+🧩  MySQL 8+ and older Node.js MySQL clients may have conne issues. needs to do below.
+
+mysql -u root
+ALTER USER 'crud_user'@'%' IDENTIFIED WITH mysql_native_password BY 'StrongPassword123!';
+FLUSH PRIVILEGES;
+
+🧩 restart mysql
+sudo systemctl restart mysql

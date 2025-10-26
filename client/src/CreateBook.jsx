@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+
+const API_URL = process.env.REACT_APP_API_URL;
+
 const CreateBook = () => {
 
   const [values, setValues] = useState({
@@ -11,7 +14,7 @@ const CreateBook = () => {
   const navigate = useNavigate()
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios.post('http://localhost:3030/create', values)
+    axios.post('`${API_URL}`/create', values)
     .then(res => navigate('/'))
     .catch(err => console.log(err))
   }

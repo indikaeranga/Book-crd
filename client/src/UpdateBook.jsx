@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const UpdateBook = () => {
   const { id } = useParams()
   const [values, setValues] = useState({
@@ -14,13 +16,13 @@ const UpdateBook = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios.put('http://localhost:3030/update/' + id, values)
+    axios.put('`${API_URL}`/update/' + id, values)
       .then(res => navigate('/'))
       .catch(err => console.log(err))
   }
 
   useEffect(() => {
-    axios.get('http://localhost:3030/getrecord/' + id)
+    axios.get('`${API_URL}`/getrecord/' + id)
       .then(res => {
         if (res.data.length > 0) {
           setValues({

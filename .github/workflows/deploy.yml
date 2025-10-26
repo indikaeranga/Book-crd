@@ -1,0 +1,25 @@
+name: Deploy to AWS
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH to EC2 and deploy
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker pull indikaeranga06/frontend:latest
+            docker pull indikaeranga06/backend:latest
+            docker stop frontend || true && docker rm frontend || true
+            docker stop backend || true && docker rm backend || true
+            docker run -d -p 5173:80 --name frontend indikaeranga06/frontend:latest
+            docker run -d -p 3030:3030 --name backend indikaeranga06/backend:latest

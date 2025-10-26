@@ -15,6 +15,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Debug: Check if secrets exist
+      - name: Check GitHub Secrets
+        run: |
+          if [ -z "${{ secrets.EC2_HOST }}" ]; then
+            echo "❌ EC2_HOST is empty!"
+          else
+            echo "✅ EC2_HOST is set"
+          fi
+
+          if [ -z "${{ secrets.EC2_SSH_KEY }}" ]; then
+            echo "❌ EC2_SSH_KEY is empty!"
+          else
+            echo "✅ EC2_SSH_KEY is set"
+          fi
+
+      # 2️⃣ Optional: Test SSH connection from runner
+      - name: Test SSH Connection
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" > /tmp/id_rsa
+          chmod 600 /tmp/id_rsa
+          ssh -o StrictHostKeyChecking=no -i /tmp/id_rsa ubuntu@${{ secrets.EC2_HOST }} "echo SSH connection works!"
+      
+      # 3️⃣ SSH to EC2 and deploy containers
       - name: SSH to EC2 and deploy
         uses: appleboy/ssh-action@v1.2.2
         with:
@@ -24,6 +47,7 @@ jobs:
           port: 22
           timeout: 30s
           command_timeout: 10m
+          debug: true
           script: |
             # Pull latest images
             docker pull indikaeranga06/book-crd-frontend:${{ github.event.inputs.tag || 'latest' }}

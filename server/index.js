@@ -7,12 +7,13 @@ app.use(express.json())
 app.use(cors())
 
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "crud",
-    dateStrings: "date"
-})
+  host: "34.194.107.52", // your EC2 public IP
+  user: "crud_user",
+  password: "StrongPassword123!",
+  database: "crud",
+  dateStrings: "date"
+});
+
 
 app.get('/',(req, res) => {
     const sql = "select * from book";

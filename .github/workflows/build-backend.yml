@@ -5,7 +5,7 @@ on:
     paths:
       - 'backend/**'
       - '.github/workflows/build-backend.yml'
-
+  workflow_dispatch:  # <-- adds manual trigger    
 jobs:
   build:
     runs-on: ubuntu-latest

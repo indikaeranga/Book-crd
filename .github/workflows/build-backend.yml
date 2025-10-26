@@ -3,7 +3,7 @@ name: Build & Push Backend
 on:
   push:
     paths:
-      - 'backend/**'
+      - 'server/**'
       - '.github/workflows/build-backend.yml'
   workflow_dispatch:
     inputs:
@@ -33,5 +33,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./server
+          file: ./server/Dockerfile
           push: true
-          tags: indikaeranga06/book-crd-backend:${{ github.event.inputs.tag || 'latest'}}
+          tags: indikaeranga06/book-crd-backend:${{ github.event.inputs.tag || 'latest' }}

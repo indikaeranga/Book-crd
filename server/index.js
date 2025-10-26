@@ -8,7 +8,7 @@ app.use(cors())
 
 const db = mysql.createConnection({
   host: "34.194.107.52", // your EC2 public IP
-  user: "crud_user",
+  user: "root",
   password: "StrongPassword123!",
   database: "crud",
   dateStrings: "date"

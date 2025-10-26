@@ -32,6 +32,6 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./backend
+          context: ./server
           push: true
           tags: indikaeranga06/backend:${{ github.event.inputs.tag }}
